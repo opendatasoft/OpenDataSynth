@@ -4,7 +4,7 @@ var context = new AudioContext();
 
 var suggestedDatasets = function(req, res) {
     var search = req.term;
-    $.get(domain + "/api/datasets/1.0/search/?sort=modified&refine.features=analyze&rows=10&q=" + search, function(result) {
+    $.get(domain + "/api/datasets/1.0/search/?sort=records_count&refine.features=analyze&rows=10&q=" + search, function(result) {
         data = result.datasets.map(function(dataset) {
            return {
                value: dataset.datasetid,
