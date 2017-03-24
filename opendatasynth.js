@@ -60,6 +60,7 @@ var go = function() {
         var minVal = records[0].fields[fieldToListenTo];
         var maxVal = records[0].fields[fieldToListenTo];
         var recVals = [];
+
         for (var i = 1; i < numOfRecords; i += 1) {
             var fval = records[i].fields[fieldToListenTo];
             if (typeof fval === "number" && fval === fval) {
@@ -73,7 +74,21 @@ var go = function() {
                 recVals.push(fval);
             }
         }
+
         console.debug("found min", minVal, "and max", maxVal);
+
+        // Normalize the list of values in the interval [-1,1] in order to create
+        // a PCM audio waveform
+        recVals = recVals.map(function(val) {
+            return 2 * ((val - minVal) / (maxVal - minVal)) - 1;
+        });
+
+        // Add 0 value at beginning and end to create a fade in/out, avoiding pops
+        recVals.unshift(0);
+        recVals.push(0);
+
+        // Create a smooth function in order to interpollate extra points in interval
+        var smooth = Smooth(recVals);
 
         //set up audio
         var duration = 2; //2 second of audio
@@ -82,31 +97,19 @@ var go = function() {
 
         var audioBuffer = context.createBuffer(1, numOfSamples, sampleRate);
         var dataBuffer = audioBuffer.getChannelData(0);
-        var normalize = function(val) {
-            return 2 * ((val - minVal) / (maxVal - minVal)) - 1;  
-        };
-        console.debug("Smoothing values");
-        var smooth = Smooth(recVals);
-        // loop on future samples, normalize field value, and stick it in audio buffer
-        console.debug("Filling buffer");
+        // Loop on future sample indices, compute sample value and stick it in audio buffer
         for (var j = 0; j < numOfSamples ; j += 1) {
             //if ( j % Math.floor(numOfSamples / 10) === 0) console.log((100 * j / numOfSamples) + "%");
-            var nval = normalize(smooth(j * recVals.length / numOfSamples));
-            //console.log(nval);
+            var nval = smooth(j * recVals.length / numOfSamples);
             dataBuffer[j] = nval;
         }
 
-        //playback
-        //source = context.createBufferSource();
-        //source.buffer = audioBuffer;
         wavesurfer = WaveSurfer.create({
             container: '#waveform',
             waveColor: 'violet',
             progressColor: 'purple'
         });
         wavesurfer.loadDecodedBuffer(audioBuffer);
-        //source.connect(context.destination);
-        //$("#go")[0].hidden = true;
         $("#play")[0].hidden = false;     
     });
 };
