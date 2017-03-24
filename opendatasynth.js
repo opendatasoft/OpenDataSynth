@@ -74,11 +74,16 @@ angular.module('ods-widgets').controller('ExampleController', ['$scope', functio
                     recVals.push(fval);
                 }
             }
-            // Normalize the list of values in the interval [-1,1] in order to create
-            // a PCM audio waveform
-            recVals = recVals.map(function(val) {
-                return 2 * ((val - minVal) / (maxVal - minVal)) - 1;
-            });
+            if (maxVal !== minVal) {
+                // Normalize the list of values in the interval [-1,1] in order to create
+                // a PCM audio waveform
+                recVals = recVals.map(function(val) {
+                    return 2 * ((val - minVal) / (maxVal - minVal)) - 1;
+                });
+            } else {
+                // let's not divide by 0. Instead since that thing is a flat line, let's make it flat for real.
+                recVals = [0];
+            }
 
             // Add 0 value at beginning and end to create a fade in/out, avoiding pops
             recVals.unshift(0);
