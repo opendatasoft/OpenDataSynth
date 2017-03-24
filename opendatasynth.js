@@ -49,9 +49,6 @@ angular.module('ods-widgets').controller('ExampleController', ['$scope', functio
 
         console.log($scope.local);
 
-        if ($scope.wavesurfer) {
-            $scope.wavesurfer.destroy();
-        }
         var url = $scope.$$childHead.catctx.domainUrl + "/api/records/1.0/search/?rows=10000&dataset=" + $scope.local.dts;
         if ($scope.local.srt) {
             url += "&sort=" + $scope.local.srt;
@@ -104,6 +101,9 @@ angular.module('ods-widgets').controller('ExampleController', ['$scope', functio
                 dataBuffer[j] = nval;
             }
 
+            if ($scope.wavesurfer) {
+                $scope.wavesurfer.destroy();
+            }
             $scope.wavesurfer = WaveSurfer.create({
                 container: '#waveform',
                 waveColor: 'violet',
