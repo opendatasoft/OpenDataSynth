@@ -55,20 +55,19 @@ var go = function() {
     $.get(domain + "/api/records/1.0/search/?rows=10000&dataset=" +  datasetId, function(result) {
         var records = result.records;
         var numOfRecords = records.length;
-        // Find min and max val. Set everything to first elem and skip it in loop
-        // Use the loop to create a tidier array
-        var minVal = records[0].fields[fieldToListenTo];
-        var maxVal = records[0].fields[fieldToListenTo];
+        // Find min and max val, so we can normalize values later.
+        // Use the loop to create a tidier array that we can feed to smooth
+        var minVal = null;
+        var maxVal = null;
         var recVals = [];
-
-        for (var i = 1; i < numOfRecords; i += 1) {
+        for (var i = 0; i < numOfRecords; i += 1) {
             var fval = records[i].fields[fieldToListenTo];
             if (typeof fval === "number" && fval === fval) {
                 // avoid type errors
-                if (fval < minVal) {
+                if (minVal === null || fval < minVal) {
                     minVal = fval;
                 }
-                if (fval > maxVal) {
+                if (maxVal === null || fval > maxVal) {
                     maxVal = fval;
                 }
                 recVals.push(fval);
