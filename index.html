@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>OpenDataSynth</title>
+    <link rel="stylesheet prefetch" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+</head>
+<body>
+    <div class="ui-widget">
+      <label for="dataset">Dataset</label>
+      <input id="dataset" value="arome-0025-sp1_sp2@public">
+    </div>
+    <label for="field">Musical Field</label>
+    <select class="ui-widget" id="field">
+        <option />
+    </select>
+    <br />
+    <button id="go" onclick="go()">Get data!</button>
+    <div id="waveform"></div>
+    <button id="play" onclick="wavesurfer.play()" hidden="true"> Play that dataset</button>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/1.3.2/wavesurfer.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="//osuushi.github.io/js/Smooth-0.1.6.js"></script>
+    <script src="opendatasynth.js"></script>
+
+
+</body>
+</html>
