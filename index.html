@@ -13,7 +13,7 @@
         <h2>Make your data sing</h2>
         <p>Is there really noise in all data? Find it out by listening — yes, listening — to your favorite datasets from the OpenDataSoft network</p>
         <ods-catalog-context context="catctx" catctx-domain="data" catctx-parameters="{'sort':'explore.download_count','refine.features':'analyze'}">
-            <ods-text-search placeholder="weather" button="Get data" context="catctx" autofocus="true"></ods-text-search>
+            <ods-text-search placeholder="Search for musical datasets" context="catctx" autofocus="true"></ods-text-search>
             <div ods-results="items" ods-results-context="catctx" ods-results-max="8">
                 <div class="row ods-box results">
                     <div ng-repeat="item in items" class="col-lg-3">
@@ -33,10 +33,10 @@
                             <ods-dataset-context context="dtsctx" dtsctx-dataset="{{local.dts}}" dtsctx-domain="data">
                                 <p>Listening column</p>
                                 <select name="listeningField" id="listeningField" ng-model="local.fld">
-                                    <option ng-repeat="field in dtsctx.dataset.fields | filter:fieldNumeric" value="{{field.name}}">{{field.label}}</option>
+                                    <option ng-repeat="field in (dtsctx.dataset.fields|filter:fieldNumeric)" value="{{field.name}}" ng-init="local.fld = ($first ? field.name : local.fld)">{{field.label}}</option>
                                 </select>
                                 <p>Sort column</p>
-                                <select name="sortingField" id="sortingField" ng-model="local.srt">
+                                <select name="sortingField" id="sortingField" ng-model="local.srt" ng-init="local.srt = null">
                                     <option ng-repeat="field in dtsctx.dataset.fields | filter:fieldSortable" value="{{field.name}}">{{field.label}}</option>
                                 </select>
                             </ods-dataset-context>
