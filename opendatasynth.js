@@ -1,6 +1,5 @@
 angular.module('ods-widgets').controller('ExampleController', ['$scope', function($scope) {
     var source;
-    //$scope.wavesurfer = null;
     $scope.wavesurfer = WaveSurfer.create({
         container: '#waveform',
         fillParent: true,
@@ -50,13 +49,9 @@ angular.module('ods-widgets').controller('ExampleController', ['$scope', functio
             $scope.local.srt = null;
             return;
         }
-
         if (! ($scope.local.dts && $scope.local.fld) ) {
             return;
         }
-
-        console.log($scope.local);
-
         var url = $scope.$$childHead.catctx.domainUrl + "/api/records/1.0/search/?rows=10000&dataset=" + $scope.local.dts;
         if ($scope.local.srt) {
             url += "&sort=" + $scope.local.srt;
