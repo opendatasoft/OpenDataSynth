@@ -40,7 +40,7 @@ input[type="radio"] {
 }
 
 .checked {
-    background:yellow;
+    background: #F3F3F3;
 }
 
 .waveform-container {
