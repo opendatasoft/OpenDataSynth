@@ -111,7 +111,9 @@ angular.module('ods-widgets').controller('ExampleController', ['$scope', functio
             }
             $scope.wavesurfer = WaveSurfer.create({
                 container: '#waveform',
-                waveColor: 'violet',
+                fillParent: true,
+                scrollParent: false,
+                waveColor: 'darkblue',
                 progressColor: 'purple'
             });
             $scope.wavesurfer.loadDecodedBuffer(audioBuffer);
