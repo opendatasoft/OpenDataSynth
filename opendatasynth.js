@@ -51,7 +51,7 @@ angular.module('ods-widgets').controller('OpenDataSynthController', ['$scope', '
         $scope.working = true;
         var url = $scope.$$childHead.catctx.domainUrl + "/api/records/1.0/search/?rows=10000&dataset=" + $scope.dts.id;
         if ($scope.local.srt) {
-            url += "&sort=" + $scope.local.srt;
+            url += "&sort=-" + $scope.local.srt;
         }
         $http.get(url).then(function(result) {
             var records = result.data.records;
