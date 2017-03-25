@@ -20,9 +20,14 @@
                         <label for="{{item.datasetid}}">
                             <div class="ods-box result dataset-box" ng-class="{checked: dts.id === item.datasetid, 'dataset-box-enabled': !working}">
                                 <input type="radio" ng-model="dts.id" id="{{item.datasetid}}" value="{{item.datasetid}}" ng-disabled="working">
-                                <h4>{{item.metas.title}}</h4>
-                                <p>{{item.metas.source_domain_title}}</p>
-                                <p>{{item.metas.records_count}} records</p>
+                                <span><h4>{{item.metas.title}}</h4>({{item.metas.source_domain_title}})</span>
+                                <p>
+                                    <i class="quality-indicator fa fa-2x" aria-hidden="true" ng-class="{
+                                        'fa-volume-up': (item.fields|filter:fieldNumeric).length > 0 && item.metas.records_count >= 2500,
+                                        'fa-volume-down': (item.fields|filter:fieldNumeric).length > 0 && item.metas.records_count <= 2500 && item.metas.records_count > 500,
+                                        'fa-volume-off': (item.fields|filter:fieldNumeric).length === 0 || item.metas.records_count < 500
+                                    }"></i>
+                                </p>
                             </div>
                         </label>
                     </div>
