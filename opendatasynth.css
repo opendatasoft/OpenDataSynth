@@ -1,0 +1,23 @@
+.results {
+    min-height: 250px;
+}
+
+.result {
+    height: 130px;
+    padding: 15px;
+    padding-top: 0px;
+    margin-bottom: 15px;
+}
+
+
+input[type="radio"] {
+    display: none;
+}
+
+.checked {
+    background:yellow;
+}
+
+.waveform-container {
+    max-width: 500px;
+}

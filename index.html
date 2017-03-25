@@ -9,40 +9,43 @@
 </head>
 <body>
     <div class="ng-cloak" ng-app="ods-widgets" ng-controller="ExampleController">
-        <ods-catalog-context context="catctx" catctx-domain="data" >
-            <ods-text-search
-                   placeholder="weather"
-                   button="Get data"
-                   context="catctx"
-                   autofocus="true">
-            </ods-text-search>
-            <div ods-results="items" ods-results-context="catctx" ods-results-max="10">
-                <label ng-repeat="item in items">
-                    <input type="radio" ng-model="local.dts" value="{{item.datasetid}}">{{item.metas.title}} ({{item.metas.source_domain_title}}) <br />
-                </label>
+        <ods-catalog-context context="catctx" catctx-domain="data" catctx-parameters="{'sort':'explore.download_count','refine.features':'analyze'}">
+            <ods-text-search placeholder="weather" button="Get data" context="catctx" autofocus="true"></ods-text-search>
+            <div class="row ods-box results">
+                <div ods-results="items" ods-results-context="catctx" ods-results-max="8">
+                    <div ng-repeat="item in items" class="col-lg-3">
+                        <label for="{{item.datasetid}}">
+                            <div class="ods-box result" ng-class="{checked: local.dts === item.datasetid}">
+                                <input type="radio" ng-model="local.dts" id="{{item.datasetid}}" value="{{item.datasetid}}">
+                                <h4>{{item.metas.title}}</h4>
+                                <p>{{item.metas.source_domain_title}}</p>
+                                <p>{{item.metas.records_count}} records</p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
             </div>
-            <div ods-results="items" ods-results-context="catctx" ods-results-max="10">
-                <div ng-repeat="item in items">
-                    <ods-dataset-context context="dtsctx"
-                                         ng-if="local.dts == item.datasetid"
-                                         dtsctx-dataset="{{local.dts}}"
-                                         dtsctx-domain="data">
-
-
-                        <p>Listening column</p>
-                        <select name="listeningField" id="listeningField" ng-model="local.fld">
-                            <option ng-repeat="field in dtsctx.dataset.fields | filter:fieldNumeric" value="{{field.name}}">{{field.label}}</option>
-                        </select>
-                        <p>Sort column</p>
-                        <select name="sortingField" id="sortingField" ng-model="local.srt">
-                            <option ng-repeat="field in dtsctx.dataset.fields | filter:fieldSortable" value="{{field.name}}">{{field.label}}</option>
-                        </select>
-                        <div id="waveform"></div>
-                        <button id="play" ng-click="play()">Play that dataset</button>
-                    </ods-dataset-context>
+            <div class="row ods-box">
+                <div ods-results="items" ods-results-context="catctx" ods-results-max="8">
+                    <div ng-repeat="item in items">
+                        <ods-dataset-context context="dtsctx" ng-if="local.dts == item.datasetid" dtsctx-dataset="{{local.dts}}" dtsctx-domain="data">
+                            <p>Listening column</p>
+                            <select name="listeningField" id="listeningField" ng-model="local.fld">
+                                <option ng-repeat="field in dtsctx.dataset.fields | filter:fieldNumeric" value="{{field.name}}">{{field.label}}</option>
+                            </select>
+                            <p>Sort column</p>
+                            <select name="sortingField" id="sortingField" ng-model="local.srt">
+                                <option ng-repeat="field in dtsctx.dataset.fields | filter:fieldSortable" value="{{field.name}}">{{field.label}}</option>
+                            </select>
+                        </ods-dataset-context>
+                    </div>
                 </div>
             </div>
         </ods-catalog-context>
+        <div class="waveform-container">
+            <div id="waveform"></div>
+            <button id="play" ng-click="play()">Play that dataset</button>
+        </div>
     </div>
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/1.3.2/wavesurfer.min.js"></script>
