@@ -1,5 +1,6 @@
 angular.module('ods-widgets').controller('ExampleController', ['$scope', function($scope) {
     var source;
+    var context = new AudioContext();
     $scope.wavesurfer = WaveSurfer.create({
         container: '#waveform',
         fillParent: true,
@@ -8,8 +9,17 @@ angular.module('ods-widgets').controller('ExampleController', ['$scope', functio
         progressColor: 'purple'
     });
 
-
-    var context = new AudioContext();
+    (function initWaveSurfer() {
+        var duration = 2;
+        var sampleRate = 44100;
+        var numOfSamples = duration * sampleRate;
+        var audioBuffer = context.createBuffer(1, numOfSamples, sampleRate);
+        var dataBuffer = audioBuffer.getChannelData(0);
+        for (var i = 0; i < numOfSamples ; i += 1) {
+            dataBuffer[i] = 0;
+        }
+        $scope.wavesurfer.loadDecodedBuffer(audioBuffer);
+    })();
 
     $scope.domUrl = null;
     $scope.local = {
@@ -35,12 +45,6 @@ angular.module('ods-widgets').controller('ExampleController', ['$scope', functio
 
     $scope.fieldNumeric = function(item) {
         return item.type === "int" || item.type === "double";
-    };
-
-    $scope.play = function() {
-        if ($scope.wavesurfer) {
-            $scope.wavesurfer.play();
-        }
     };
 
     $scope.$watch('local', function(nv, ov) {
