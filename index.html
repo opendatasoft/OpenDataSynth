@@ -15,7 +15,7 @@
                 <div ods-results="items" ods-results-context="catctx" ods-results-max="8">
                     <div ng-repeat="item in items" class="col-lg-3">
                         <label for="{{item.datasetid}}">
-                            <div class="ods-box result" ng-class="{checked: local.dts === item.datasetid}">
+                            <div class="ods-box result dataset-box" ng-class="{checked: local.dts === item.datasetid}">
                                 <input type="radio" ng-model="local.dts" id="{{item.datasetid}}" value="{{item.datasetid}}">
                                 <h4>{{item.metas.title}}</h4>
                                 <p>{{item.metas.source_domain_title}}</p>

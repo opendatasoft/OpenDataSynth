@@ -14,6 +14,11 @@ input[type="radio"] {
     display: none;
 }
 
+.dataset-box:hover {
+    cursor: pointer;
+    cursor: hand
+}
+
 .checked {
     background:yellow;
 }
