@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="opendatasynth.css">
 </head>
 <body>
-    <div class="ng-cloak main-container" ng-app="ods-widgets" ng-controller="ExampleController">
+    <div class="ng-cloak main-container" ng-app="ods-widgets" ng-controller="OpenDataSynthController">
         <h1>OpenDataSynth</h1>
         <h2>Make your data sing</h2>
         <p>Is there really noise in all data? Find it out by listening — yes, listening — to your favorite datasets from the OpenDataSoft network</p>
@@ -18,8 +18,8 @@
                 <div class="row ods-box results">
                     <div ng-repeat="item in items" class="col-lg-3">
                         <label for="{{item.datasetid}}">
-                            <div class="ods-box result dataset-box" ng-class="{checked: local.dts === item.datasetid}">
-                                <input type="radio" ng-model="local.dts" id="{{item.datasetid}}" value="{{item.datasetid}}">
+                            <div class="ods-box result dataset-box" ng-class="{checked: dts.id === item.datasetid}">
+                                <input type="radio" ng-model="dts.id" id="{{item.datasetid}}" value="{{item.datasetid}}">
                                 <h4>{{item.metas.title}}</h4>
                                 <p>{{item.metas.source_domain_title}}</p>
                                 <p>{{item.metas.records_count}} records</p>
@@ -29,11 +29,12 @@
                 </div>
                 <div class="row ods-box">
                     <div class="controls-container col-lg-4">
-                        <div ng-repeat="item in items" class="controls" ng-if="local.dts == item.datasetid">
-                            <ods-dataset-context context="dtsctx" dtsctx-dataset="{{local.dts}}" dtsctx-domain="data">
+                        <div ng-repeat="item in items" class="controls" ng-if="dts.id == item.datasetid">
+                            <ods-dataset-context context="dtsctx" dtsctx-dataset="{{dts.id}}" dtsctx-domain="data">
                                 <p>Listening column</p>
-                                <select name="listeningField" id="listeningField" ng-model="local.fld">
+                                <select name="listeningField" id="listeningField" ng-model="local.fld" ng-init="local.fld = null">
                                     <option ng-repeat="field in (dtsctx.dataset.fields|filter:fieldNumeric)" value="{{field.name}}" ng-init="local.fld = ($first ? field.name : local.fld)">{{field.label}}</option>
+                                    <option ng-if="(dtsctx.dataset.fields|filter:fieldNumeric).length === 0" selected>There is nothing to listen to :(</option>
                                 </select>
                                 <p>Sort column</p>
                                 <select name="sortingField" id="sortingField" ng-model="local.srt" ng-init="local.srt = null">
@@ -42,9 +43,15 @@
                             </ods-dataset-context>
                         </div>
                     </div>
-                    <div class="waveform-container col-lg-5">
+                    <div class="col-lg-1"></div>
+                    <div class="play-button-container col-lg-1">
+                        <button id="play" ng-click="wavesurfer.play()">
+                            <i class="fa fa-play fa-4x" ng-hide="working" aria-hidden="true"></i>
+                            <i class="fa fa-spinner fa-spin fa-4x" ng-show="working" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <div class="waveform-container col-lg-6">
                         <div id="waveform"></div>
-                        <button id="play" ng-click="wavesurfer.play()"><i class="fa fa-play" aria-hidden="true"></i></button>
                     </div>
                 </div>
             </div>

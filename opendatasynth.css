@@ -3,7 +3,7 @@ body {
 }
 
 select {
-    width: 250px;
+    width: 350px;
 }
 
 .main-container {
@@ -16,6 +16,17 @@ select {
 
 .results {
     min-height: 250px;
+}
+
+.play-button-container {
+    height: 128px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#play {
+    width: 75px;
 }
 
 .result {
