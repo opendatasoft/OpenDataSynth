@@ -14,8 +14,8 @@
         <p>Is there really noise in all data? Find it out by listening — yes, listening — to your favorite datasets from the OpenDataSoft network</p>
         <ods-catalog-context context="catctx" catctx-domain="data" catctx-parameters="{'sort':'explore.download_count','refine.features':'analyze'}">
             <ods-text-search placeholder="weather" button="Get data" context="catctx" autofocus="true"></ods-text-search>
-            <div class="row ods-box results">
-                <div ods-results="items" ods-results-context="catctx" ods-results-max="8">
+            <div ods-results="items" ods-results-context="catctx" ods-results-max="8">
+                <div class="row ods-box results">
                     <div ng-repeat="item in items" class="col-lg-3">
                         <label for="{{item.datasetid}}">
                             <div class="ods-box result dataset-box" ng-class="{checked: local.dts === item.datasetid}">
@@ -27,9 +27,7 @@
                         </label>
                     </div>
                 </div>
-            </div>
-            <div class="row ods-box">
-                <div ods-results="items" ods-results-context="catctx" ods-results-max="8">
+                <div class="row ods-box">
                     <div ng-repeat="item in items" class="col-lg-4"  ng-if="local.dts == item.datasetid">
                         <ods-dataset-context context="dtsctx" dtsctx-dataset="{{local.dts}}" dtsctx-domain="data">
                             <p>Listening column</p>
@@ -42,10 +40,10 @@
                             </select>
                         </ods-dataset-context>
                     </div>
-                </div>
-                <div class="waveform-container col-lg-5">
-                    <div id="waveform"></div>
-                    <button id="play" ng-click="wavesurfer.play()"><i class="fa fa-play" aria-hidden="true"></i></button>
+                    <div class="waveform-container col-lg-5">
+                        <div id="waveform"></div>
+                        <button id="play" ng-click="wavesurfer.play()"><i class="fa fa-play" aria-hidden="true"></i></button>
+                    </div>
                 </div>
             </div>
         </ods-catalog-context>
