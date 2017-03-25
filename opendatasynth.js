@@ -1,6 +1,14 @@
 angular.module('ods-widgets').controller('ExampleController', ['$scope', function($scope) {
     var source;
-    $scope.wavesurfer = null;
+    //$scope.wavesurfer = null;
+    $scope.wavesurfer = WaveSurfer.create({
+        container: '#waveform',
+        fillParent: true,
+        scrollParent: false,
+        waveColor: 'darkblue',
+        progressColor: 'purple'
+    });
+
 
     var context = new AudioContext();
 
@@ -106,16 +114,7 @@ angular.module('ods-widgets').controller('ExampleController', ['$scope', functio
                 dataBuffer[j] = nval;
             }
 
-            if ($scope.wavesurfer) {
-                $scope.wavesurfer.destroy();
-            }
-            $scope.wavesurfer = WaveSurfer.create({
-                container: '#waveform',
-                fillParent: true,
-                scrollParent: false,
-                waveColor: 'darkblue',
-                progressColor: 'purple'
-            });
+            $scope.wavesurfer.empty();
             $scope.wavesurfer.loadDecodedBuffer(audioBuffer);
         });
     }, true);
