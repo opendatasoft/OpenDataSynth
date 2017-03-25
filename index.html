@@ -28,17 +28,19 @@
                     </div>
                 </div>
                 <div class="row ods-box">
-                    <div ng-repeat="item in items" class="col-lg-4"  ng-if="local.dts == item.datasetid">
-                        <ods-dataset-context context="dtsctx" dtsctx-dataset="{{local.dts}}" dtsctx-domain="data">
-                            <p>Listening column</p>
-                            <select name="listeningField" id="listeningField" ng-model="local.fld">
-                                <option ng-repeat="field in dtsctx.dataset.fields | filter:fieldNumeric" value="{{field.name}}">{{field.label}}</option>
-                            </select>
-                            <p>Sort column</p>
-                            <select name="sortingField" id="sortingField" ng-model="local.srt">
-                                <option ng-repeat="field in dtsctx.dataset.fields | filter:fieldSortable" value="{{field.name}}">{{field.label}}</option>
-                            </select>
-                        </ods-dataset-context>
+                    <div class="controls-container col-lg-4">
+                        <div ng-repeat="item in items" class="controls" ng-if="local.dts == item.datasetid">
+                            <ods-dataset-context context="dtsctx" dtsctx-dataset="{{local.dts}}" dtsctx-domain="data">
+                                <p>Listening column</p>
+                                <select name="listeningField" id="listeningField" ng-model="local.fld">
+                                    <option ng-repeat="field in dtsctx.dataset.fields | filter:fieldNumeric" value="{{field.name}}">{{field.label}}</option>
+                                </select>
+                                <p>Sort column</p>
+                                <select name="sortingField" id="sortingField" ng-model="local.srt">
+                                    <option ng-repeat="field in dtsctx.dataset.fields | filter:fieldSortable" value="{{field.name}}">{{field.label}}</option>
+                                </select>
+                            </ods-dataset-context>
+                        </div>
                     </div>
                     <div class="waveform-container col-lg-5">
                         <div id="waveform"></div>
