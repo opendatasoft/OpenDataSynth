@@ -18,8 +18,8 @@
                 <div class="row ods-box results">
                     <div ng-repeat="item in items" class="col-lg-3">
                         <label for="{{item.datasetid}}">
-                            <div class="ods-box result dataset-box" ng-class="{checked: dts.id === item.datasetid}">
-                                <input type="radio" ng-model="dts.id" id="{{item.datasetid}}" value="{{item.datasetid}}">
+                            <div class="ods-box result dataset-box" ng-class="{checked: dts.id === item.datasetid, 'dataset-box-enabled': !working}">
+                                <input type="radio" ng-model="dts.id" id="{{item.datasetid}}" value="{{item.datasetid}}" ng-disabled="working">
                                 <h4>{{item.metas.title}}</h4>
                                 <p>{{item.metas.source_domain_title}}</p>
                                 <p>{{item.metas.records_count}} records</p>

@@ -45,7 +45,7 @@ input[type="radio"] {
     display: none;
 }
 
-.dataset-box:hover {
+.dataset-box-enabled:hover {
     cursor: pointer;
     cursor: hand;
 }
