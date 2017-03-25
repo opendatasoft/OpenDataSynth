@@ -4,8 +4,6 @@ angular.module('ods-widgets').controller('OpenDataSynthController', ['$scope', '
     var sampleRate = 44100; //Works in most browsers
     var numOfSamples = duration * sampleRate;
     var context = new AudioContext();
-    var audioBuffer = context.createBuffer(1, numOfSamples, sampleRate);
-    var dataBuffer = audioBuffer.getChannelData(0);
 
     $scope.working = false;
     $scope.domUrl = null;
@@ -90,6 +88,9 @@ angular.module('ods-widgets').controller('OpenDataSynthController', ['$scope', '
             // Create a smooth function in order to interpollate extra points in interval
             var smooth = Smooth(recVals);
             // Loop on future sample indices, compute sample value and stick it in audio buffer
+            var audioBuffer = context.createBuffer(1, numOfSamples, sampleRate);
+            var dataBuffer = audioBuffer.getChannelData(0);
+
             for (var j = 0; j < numOfSamples ; j += 1) {
                 var nval = smooth(j * recVals.length / numOfSamples);
                 dataBuffer[j] = nval;
@@ -97,12 +98,13 @@ angular.module('ods-widgets').controller('OpenDataSynthController', ['$scope', '
             $scope.wavesurfer.empty();
             $scope.wavesurfer.loadDecodedBuffer(audioBuffer);
             $scope.working = false;
-            //$scope.$apply()
         });
     }, true);
 
     (function initWaveSurfer() {
         $scope.working = true;
+        var audioBuffer = context.createBuffer(1, numOfSamples, sampleRate);
+        var dataBuffer = audioBuffer.getChannelData(0);
         for (var i = 0; i < numOfSamples ; i += 1) {
             dataBuffer[i] = 0;
         }
