@@ -2,13 +2,16 @@
 <html>
 <head>
     <title>OpenDataSynth</title>
-    <link rel="stylesheet prefetch" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet prefetch" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://opendatasoft.github.io/ods-widgets/dist/ods-widgets.css">
     <link rel="stylesheet" href="https://data.opendatasoft.com/static/compressed/css/56572e79ab12.css">
     <link rel="stylesheet" href="opendatasynth.css">
 </head>
 <body>
-    <div class="ng-cloak" ng-app="ods-widgets" ng-controller="ExampleController">
+    <div class="ng-cloak main-container" ng-app="ods-widgets" ng-controller="ExampleController">
+        <h1>OpenDataSynth</h1>
+        <h2>Make your data sing</h2>
+        <p>Is there really noise in all data? Find it out by listening — yes, listening — to your favorite datasets from the OpenDataSoft network</p>
         <ods-catalog-context context="catctx" catctx-domain="data" catctx-parameters="{'sort':'explore.download_count','refine.features':'analyze'}">
             <ods-text-search placeholder="weather" button="Get data" context="catctx" autofocus="true"></ods-text-search>
             <div class="row ods-box results">
@@ -27,8 +30,8 @@
             </div>
             <div class="row ods-box">
                 <div ods-results="items" ods-results-context="catctx" ods-results-max="8">
-                    <div ng-repeat="item in items">
-                        <ods-dataset-context context="dtsctx" ng-if="local.dts == item.datasetid" dtsctx-dataset="{{local.dts}}" dtsctx-domain="data">
+                    <div ng-repeat="item in items" class="col-lg-4"  ng-if="local.dts == item.datasetid">
+                        <ods-dataset-context context="dtsctx" dtsctx-dataset="{{local.dts}}" dtsctx-domain="data">
                             <p>Listening column</p>
                             <select name="listeningField" id="listeningField" ng-model="local.fld">
                                 <option ng-repeat="field in dtsctx.dataset.fields | filter:fieldNumeric" value="{{field.name}}">{{field.label}}</option>
@@ -40,12 +43,12 @@
                         </ods-dataset-context>
                     </div>
                 </div>
+                <div class="waveform-container col-lg-5">
+                    <div id="waveform"></div>
+                    <button id="play" ng-click="play()"><i class="fa fa-play" aria-hidden="true"></i></button>
+                </div>
             </div>
         </ods-catalog-context>
-        <div class="waveform-container">
-            <div id="waveform"></div>
-            <button id="play" ng-click="play()">Play that dataset</button>
-        </div>
     </div>
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/1.3.2/wavesurfer.min.js"></script>
