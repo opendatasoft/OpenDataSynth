@@ -58,9 +58,10 @@
                                     <i class="quality-indicator fa fa-fw"
                                        aria-hidden="true"
                                        ng-class="{
-                                        'fa-volume-up': (item.fields|filter:fieldNumeric).length > 0 && item.metas.records_count >= 2500,
+                                        'fa-deaf': (item.fields|filter:fieldNumeric).length === 0,
+                                        'fa-volume-off': (item.fields|filter:fieldNumeric).length > 0 &&item.metas.records_count < 500,
                                         'fa-volume-down': (item.fields|filter:fieldNumeric).length > 0 && item.metas.records_count <= 2500 && item.metas.records_count > 500,
-                                        'fa-volume-off': (item.fields|filter:fieldNumeric).length === 0 || item.metas.records_count < 500
+                                        'fa-volume-up': (item.fields|filter:fieldNumeric).length > 0 && item.metas.records_count >= 2500
                                         }"></i>
                                 </span>
                                     <input type="radio"
