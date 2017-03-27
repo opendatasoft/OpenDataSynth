@@ -73,3 +73,11 @@ label.dataset {
 .waveform-hidden {
     opacity: 0;
 }
+
+.dataset-box {
+    padding: 0 0;
+}
+
+.dataset {
+    padding: 10px 15px;
+}

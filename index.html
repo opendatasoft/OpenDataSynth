@@ -50,8 +50,8 @@
 
                         <ul class="list-group">
                             <div ng-repeat="item in items"
-                                 class="list-group-item"
-                                 ng-class="{active: dts.id === item.datasetid, 'dataset-box-enabled': !working}">
+                                 class="list-group-item dataset-box"
+                                 ng-class="{active: dts.id === item.datasetid}">
                                 <label class="dataset"
                                        ng-class="{'dataset-disabled': (item.fields|filter:fieldNumeric).length === 0}">
                                 <span class="badge pull-right">
@@ -131,6 +131,7 @@
                                         <div id="waveform" ng-class="{'waveform-hidden': !dts.id}"></div>
                                     </div>
                                 </div>
+                                <br />
                                 <div class="row">
                                     <div class="col-xs-12">
                                         <button id="play"
