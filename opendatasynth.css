@@ -81,3 +81,8 @@ label.dataset {
 .dataset {
     padding: 10px 15px;
 }
+
+footer {
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
