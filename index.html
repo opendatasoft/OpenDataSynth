@@ -34,17 +34,16 @@
 
     <ods-catalog-context context="catctx"
                          catctx-domain="data"
-                         catctx-parameters="{'sort':'explore.download_count','refine.features':'analyze'}">
+                         catctx-parameters="{'sort':'explore.download_count','refine.features':'analyze'}"
+                         ng-controller="CatalogContextController">
         <div class="row">
             <div class="col-xs-12">
-                <ods-text-search placeholder="Search for musical datasets" context="catctx"
-                                 autofocus="true"></ods-text-search>
+                <ods-text-search placeholder="Search for musical datasets" context="catctx" autofocus="true"></ods-text-search>
             </div>
         </div>
         <div class="wrapper">
             <ods-spinner ng-show="working" with-backdrop class="main-spinner"></ods-spinner>
-
-            <div ods-results="items" ods-results-context="catctx" ods-results-max="6">
+            <div ods-results="items" ods-results-context="catctx" ods-results-max="5">
                 <div class="row">
                     <div class="col-sm-5">
                         <ul class="list-group">
@@ -72,6 +71,7 @@
                                     <div class="dataset-source">{{item.metas.source_domain_title}}</div>
                                 </label>
                             </div>
+                            <ods-pagination-block class="list-group-item dataset-box" context="catctx" per-page="5" nofollow="true"></ods-pagination-block>
                         </ul>
                     </div>
                     <div class="col-sm-7">

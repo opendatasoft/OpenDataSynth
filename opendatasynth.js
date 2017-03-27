@@ -112,3 +112,10 @@ angular.module('ods-widgets').controller('OpenDataSynthController', ['$scope', '
         $scope.wavesurfer.loadDecodedBuffer(audioBuffer);
     })();
 }]);
+
+
+angular.module('ods-widgets').controller('CatalogContextController', ['$scope', function($scope) {
+    $scope.$watch('catctx.parameters.q', function() {
+        $scope.catctx.parameters.start = 0;
+    });
+}]);

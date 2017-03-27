@@ -86,3 +86,16 @@ footer {
     margin-top: 20px;
     margin-bottom: 40px;
 }
+
+.odswidget-pagination {
+    margin: 0 0;
+    padding: 10px 15px;
+    max-width: 100%;
+    font-weight: 700;
+}
+
+.odswidget-pagination__page-link, .odswidget-pagination__page-link:focus, .odswidget-pagination__page-link:hover {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    color: #333;
+}
