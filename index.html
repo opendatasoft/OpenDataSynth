@@ -24,7 +24,9 @@
         the OpenDataSoft network.<br>
         <a href="#how">How does it work?</a>
     </p>
-    <ods-catalog-context context="catctx" catctx-domain="data"
+
+    <ods-catalog-context context="catctx"
+                         catctx-domain="data"
                          catctx-parameters="{'sort':'explore.download_count','refine.features':'analyze'}">
         <div class="row">
             <div class="col-xs-12">
@@ -32,17 +34,20 @@
                                  autofocus="true"></ods-text-search>
             </div>
         </div>
-        <div ods-results="items" ods-results-context="catctx" ods-results-max="8">
-            <div class="row">
-                <div class="col-sm-6">
+        <div class="wrapper">
+            <ods-spinner ng-show="working" with-backdrop class="main-spinner"></ods-spinner>
 
-                    <ul class="list-group">
-                        <div ng-repeat="item in items"
-                             class="list-group-item"
-                             ng-class="{active: dts.id === item.datasetid, 'dataset-box-enabled': !working}">
-                            <label>
+            <div ods-results="items" ods-results-context="catctx" ods-results-max="8">
+                <div class="row">
+                    <div class="col-sm-6">
+
+                        <ul class="list-group">
+                            <div ng-repeat="item in items"
+                                 class="list-group-item"
+                                 ng-class="{active: dts.id === item.datasetid, 'dataset-box-enabled': !working}">
+                                <label class="dataset" ng-class="{'dataset-disabled': (item.fields|filter:fieldNumeric).length === 0}">
                                 <span class="badge pull-right">
-                                    <i class="quality-indicator fa fa-2x"
+                                    <i class="quality-indicator fa fa-fw"
                                        aria-hidden="true"
                                        ng-class="{
                                         'fa-volume-up': (item.fields|filter:fieldNumeric).length > 0 && item.metas.records_count >= 2500,
@@ -50,81 +55,79 @@
                                         'fa-volume-off': (item.fields|filter:fieldNumeric).length === 0 || item.metas.records_count < 500
                                         }"></i>
                                 </span>
-                                <input type="radio"
-                                       ng-model="dts.id"
-                                       value="{{item.datasetid}}"
-                                       ng-disabled="working">
-                                <p>
-                                    {{item.metas.title}}</p>
-                                <p>{{item.metas.source_domain_title}}</p>
-                                <p>
-                                </p>
-                            </label>
-                        </div>
-                    </ul>
-                </div>
-                <div class="col-sm-6">
-                    <div class="panel panel-primary">
-                        <div class="panel-heading">Listening to {{ dts.id }}</div>
-                        <div class="panel-body">
-                            <div ng-repeat="item in items"
-                                 class="controls"
-                                 ng-if="dts.id == item.datasetid">
-                                <ods-dataset-context context="dtsctx"
-                                                     dtsctx-dataset="{{dts.id}}"
-                                                     dtsctx-domain="data">
-                                    <div class="row">
-                                        <div class="col-sm-6">
-                                            <div class="form-group">
-                                                <label for="listeningField">Listening column</label>
-                                                <select name="listeningField"
+                                    <input type="radio"
+                                           ng-model="dts.id"
+                                           value="{{item.datasetid}}"
+                                           ng-disabled="working || (item.fields|filter:fieldNumeric).length === 0">
+                                    <div class="dataset-title">{{item.metas.title}}</div>
+                                    <div class="dataset-source">{{item.metas.source_domain_title}}</div>
+                                </label>
+                            </div>
+                        </ul>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">Listening to {{ dts.id }}</div>
+                            <div class="panel-body">
+                                <div ng-repeat="item in items"
+                                     class="controls"
+                                     ng-if="dts.id == item.datasetid">
+                                    <ods-dataset-context context="dtsctx"
+                                                         dtsctx-dataset="{{dts.id}}"
+                                                         dtsctx-domain="data">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label for="listeningField">Listening column</label>
+                                                    <select name="listeningField"
+                                                            class="form-control"
+                                                            id="listeningField"
+                                                            ng-model="local.fld"
+                                                            ng-init="local.fld = null">
+                                                        <option ng-repeat="field in (dtsctx.dataset.fields|filter:fieldNumeric)"
+                                                                value="{{field.name}}"
+                                                                ng-init="local.fld = ($first ? field.name : local.fld)">
+                                                            {{field.label}}
+                                                        </option>
+                                                        <option ng-if="(dtsctx.dataset.fields|filter:fieldNumeric).length === 0"
+                                                                selected>There is nothing to listen to :(
+                                                        </option>
+                                                    </select>
+                                                </div>
+
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label for="sortingField">Sort column</label>
+                                                <select name="sortingField"
                                                         class="form-control"
-                                                        id="listeningField"
-                                                        ng-model="local.fld"
-                                                        ng-init="local.fld = null">
-                                                    <option ng-repeat="field in (dtsctx.dataset.fields|filter:fieldNumeric)"
-                                                            value="{{field.name}}"
-                                                            ng-init="local.fld = ($first ? field.name : local.fld)">
-                                                        {{field.label}}
-                                                    </option>
-                                                    <option ng-if="(dtsctx.dataset.fields|filter:fieldNumeric).length === 0"
-                                                            selected>There is nothing to listen to :(
+                                                        id="sortingField"
+                                                        ng-model="local.srt"
+                                                        ng-init="local.srt = null">
+                                                    <option ng-repeat="field in dtsctx.dataset.fields | filter:fieldSortable"
+                                                            value="{{field.name}}">{{field.label}}
                                                     </option>
                                                 </select>
+
                                             </div>
-
                                         </div>
-                                        <div class="col-sm-6">
-                                            <label for="sortingField">Sort column</label>
-                                            <select name="sortingField"
-                                                    class="form-control"
-                                                    id="sortingField"
-                                                    ng-model="local.srt"
-                                                    ng-init="local.srt = null">
-                                                <option ng-repeat="field in dtsctx.dataset.fields | filter:fieldSortable"
-                                                        value="{{field.name}}">{{field.label}}
-                                                </option>
-                                            </select>
-
-                                        </div>
-                                    </div>
-                                </ods-dataset-context>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <div id="waveform"></div>
+                                    </ods-dataset-context>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <button id="play"
-                                            class="btn btn-primary"
-                                            ng-click="wavesurfer.play()">
-                                        <i class="fa fa-play" ng-hide="working" aria-hidden="true"></i>
-                                        <i class="fa fa-circle-o-notch fa-spin" ng-show="working"
-                                           aria-hidden="true"></i>
-                                        Play dataset
-                                    </button>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div id="waveform"></div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <button id="play"
+                                                class="btn btn-primary"
+                                                ng-click="wavesurfer.play()">
+                                            <i class="fa fa-play" ng-hide="working" aria-hidden="true"></i>
+                                            <i class="fa fa-circle-o-notch fa-spin" ng-show="working"
+                                               aria-hidden="true"></i>
+                                            Play dataset
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
