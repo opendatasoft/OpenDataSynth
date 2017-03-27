@@ -75,8 +75,12 @@
                     </div>
                     <div class="col-sm-6">
                         <div class="panel panel-primary">
-                            <div class="panel-heading">Listening to {{ dts.id }}</div>
+                            <div class="panel-heading" ng-show="dts.id">Listening to {{ dts.id }}</div>
+                            <div class="panel-heading" ng-hide="dts.id">Please select a dataset</div>
                             <div class="panel-body">
+                                <div ng-hide="dts.id" class="alert alert-info">
+                                    Please select a dataset in the left panel
+                                </div>
                                 <div ng-repeat="item in items"
                                      class="controls"
                                      ng-if="dts.id == item.datasetid">
@@ -122,13 +126,14 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-xs-12">
-                                        <div id="waveform"></div>
+                                        <div id="waveform" ng-class="{'waveform-hidden': !dts.id}"></div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-xs-12">
                                         <button id="play"
                                                 class="btn btn-primary"
+                                                ng-disabled="!dts.id"
                                                 ng-click="wavesurfer.play()">
                                             <i class="fa fa-play" ng-hide="working" aria-hidden="true"></i>
                                             <i class="fa fa-circle-o-notch fa-spin" ng-show="working"

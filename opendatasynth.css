@@ -69,3 +69,7 @@ label.dataset {
 .odswidget-spinner__backdrop {
     z-index: 10;
 }
+
+.waveform-hidden {
+    opacity: 0;
+}
