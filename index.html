@@ -4,70 +4,142 @@
     <title>OpenDataSynth</title>
     <link rel="stylesheet prefetch" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://opendatasoft.github.io/ods-widgets/dist/ods-widgets.css">
-    <link rel="stylesheet" href="https://data.opendatasoft.com/static/compressed/css/56572e79ab12.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700" rel="stylesheet">
+
     <link rel="stylesheet" href="opendatasynth.css">
 </head>
 <body>
-    <div class="ng-cloak main-container" ng-app="ods-widgets" ng-controller="OpenDataSynthController">
-        <h1>OpenDataSynth</h1>
-        <h2>Make your data sing</h2>
-        <p>Is there really noise in all data? Find it out by listening — yes, listening — to your favorite datasets from the OpenDataSoft network</p>
-        <ods-catalog-context context="catctx" catctx-domain="data" catctx-parameters="{'sort':'explore.download_count','refine.features':'analyze'}">
-            <ods-text-search placeholder="Search for musical datasets" context="catctx" autofocus="true"></ods-text-search>
-            <div ods-results="items" ods-results-context="catctx" ods-results-max="8">
-                <div class="row ods-box results">
-                    <div ng-repeat="item in items" class="col-lg-3">
-                        <label for="{{item.datasetid}}">
-                            <div class="ods-box result dataset-box" ng-class="{checked: dts.id === item.datasetid, 'dataset-box-enabled': !working}">
-                                <input type="radio" ng-model="dts.id" id="{{item.datasetid}}" value="{{item.datasetid}}" ng-disabled="working">
-                                <span><h4>{{item.metas.title}}</h4>({{item.metas.source_domain_title}})</span>
-                                <p>
-                                    <i class="quality-indicator fa fa-2x" aria-hidden="true" ng-class="{
+<div class="ng-cloak container" ng-app="ods-widgets" ng-controller="OpenDataSynthController">
+    <h1>
+        <i class="fa fa-file-audio-o" aria-hidden="true"></i>
+        OpenDataSynth
+    </h1>
+    <h2>Make your data sing</h2>
+    <p>
+        Is there really noise in all data? Find it out by listening — yes, listening — to your favorite datasets from
+        the OpenDataSoft network.<br>
+        <a href="#how">How does it work?</a>
+    </p>
+    <ods-catalog-context context="catctx" catctx-domain="data"
+                         catctx-parameters="{'sort':'explore.download_count','refine.features':'analyze'}">
+        <div class="row">
+            <div class="col-xs-12">
+                <ods-text-search placeholder="Search for musical datasets" context="catctx"
+                                 autofocus="true"></ods-text-search>
+            </div>
+        </div>
+        <div ods-results="items" ods-results-context="catctx" ods-results-max="8">
+            <div class="row">
+                <div class="col-sm-6">
+
+                    <ul class="list-group">
+                        <div ng-repeat="item in items"
+                             class="list-group-item"
+                             ng-class="{active: dts.id === item.datasetid, 'dataset-box-enabled': !working}">
+                            <label>
+                                <span class="badge pull-right">
+                                    <i class="quality-indicator fa fa-2x"
+                                       aria-hidden="true"
+                                       ng-class="{
                                         'fa-volume-up': (item.fields|filter:fieldNumeric).length > 0 && item.metas.records_count >= 2500,
                                         'fa-volume-down': (item.fields|filter:fieldNumeric).length > 0 && item.metas.records_count <= 2500 && item.metas.records_count > 500,
                                         'fa-volume-off': (item.fields|filter:fieldNumeric).length === 0 || item.metas.records_count < 500
-                                    }"></i>
+                                        }"></i>
+                                </span>
+                                <input type="radio"
+                                       ng-model="dts.id"
+                                       value="{{item.datasetid}}"
+                                       ng-disabled="working">
+                                <p>
+                                    {{item.metas.title}}</p>
+                                <p>{{item.metas.source_domain_title}}</p>
+                                <p>
                                 </p>
-                            </div>
-                        </label>
-                    </div>
-                </div>
-                <div class="row ods-box">
-                    <div class="controls-container col-lg-4">
-                        <div ng-repeat="item in items" class="controls" ng-if="dts.id == item.datasetid">
-                            <ods-dataset-context context="dtsctx" dtsctx-dataset="{{dts.id}}" dtsctx-domain="data">
-                                <p>Listening column</p>
-                                <select name="listeningField" id="listeningField" ng-model="local.fld" ng-init="local.fld = null">
-                                    <option ng-repeat="field in (dtsctx.dataset.fields|filter:fieldNumeric)" value="{{field.name}}" ng-init="local.fld = ($first ? field.name : local.fld)">{{field.label}}</option>
-                                    <option ng-if="(dtsctx.dataset.fields|filter:fieldNumeric).length === 0" selected>There is nothing to listen to :(</option>
-                                </select>
-                                <p>Sort column</p>
-                                <select name="sortingField" id="sortingField" ng-model="local.srt" ng-init="local.srt = null">
-                                    <option ng-repeat="field in dtsctx.dataset.fields | filter:fieldSortable" value="{{field.name}}">{{field.label}}</option>
-                                </select>
-                            </ods-dataset-context>
+                            </label>
                         </div>
-                    </div>
-                    <div class="col-lg-1"></div>
-                    <div class="play-button-container col-lg-1">
-                        <button id="play" ng-click="wavesurfer.play()">
-                            <i class="fa fa-play fa-4x" ng-hide="working" aria-hidden="true"></i>
-                            <i class="fa fa-circle-o-notch fa-spin fa-4x" ng-show="working" aria-hidden="true"></i>
-                        </button>
-                    </div>
-                    <div class="waveform-container col-lg-6">
-                        <div id="waveform"></div>
+                    </ul>
+                </div>
+                <div class="col-sm-6">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Listening to {{ dts.id }}</div>
+                        <div class="panel-body">
+                            <div ng-repeat="item in items"
+                                 class="controls"
+                                 ng-if="dts.id == item.datasetid">
+                                <ods-dataset-context context="dtsctx"
+                                                     dtsctx-dataset="{{dts.id}}"
+                                                     dtsctx-domain="data">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="listeningField">Listening column</label>
+                                                <select name="listeningField"
+                                                        class="form-control"
+                                                        id="listeningField"
+                                                        ng-model="local.fld"
+                                                        ng-init="local.fld = null">
+                                                    <option ng-repeat="field in (dtsctx.dataset.fields|filter:fieldNumeric)"
+                                                            value="{{field.name}}"
+                                                            ng-init="local.fld = ($first ? field.name : local.fld)">
+                                                        {{field.label}}
+                                                    </option>
+                                                    <option ng-if="(dtsctx.dataset.fields|filter:fieldNumeric).length === 0"
+                                                            selected>There is nothing to listen to :(
+                                                    </option>
+                                                </select>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label for="sortingField">Sort column</label>
+                                            <select name="sortingField"
+                                                    class="form-control"
+                                                    id="sortingField"
+                                                    ng-model="local.srt"
+                                                    ng-init="local.srt = null">
+                                                <option ng-repeat="field in dtsctx.dataset.fields | filter:fieldSortable"
+                                                        value="{{field.name}}">{{field.label}}
+                                                </option>
+                                            </select>
+
+                                        </div>
+                                    </div>
+                                </ods-dataset-context>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div id="waveform"></div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <button id="play"
+                                            class="btn btn-primary"
+                                            ng-click="wavesurfer.play()">
+                                        <i class="fa fa-play" ng-hide="working" aria-hidden="true"></i>
+                                        <i class="fa fa-circle-o-notch fa-spin" ng-show="working"
+                                           aria-hidden="true"></i>
+                                        Play dataset
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </ods-catalog-context>
-    </div>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/1.3.2/wavesurfer.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.7/angular.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.7/angular-sanitize.min.js"></script>
-    <script type="text/javascript" src="//opendatasoft.github.io/ods-widgets/dist/ods-widgets.js"></script>
-    <script src="//osuushi.github.io/js/Smooth-0.1.6.js"></script>
-    <script type="text/javascript" src="opendatasynth.js"></script>
+        </div>
+    </ods-catalog-context>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/1.3.2/wavesurfer.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.7/angular.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.7/angular-sanitize.min.js"></script>
+<script type="text/javascript" src="//opendatasoft.github.io/ods-widgets/dist/ods-widgets.js"></script>
+<script src="//osuushi.github.io/js/Smooth-0.1.6.js"></script>
+<script type="text/javascript" src="opendatasynth.js"></script>
 </body>
 </html>

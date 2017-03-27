@@ -1,45 +1,7 @@
 body {
-    text-align: center;
+    font-family: 'Open Sans', sans-serif;
 }
 
-select {
-    width: 350px;
-}
-
-.main-container {
-    width: 70%;
-    margin-right: auto;
-    margin-left: auto;
-    padding-top: 10px;
-    padding-bottom: 10px;
-}
-
-.results {
-    min-height: 250px;
-}
-
-.play-button-container {
-    height: 128px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-#play {
-    width: 75px;
-}
-
-.result {
-    height: 100px;
-    padding: 5px;
-    padding-top: 0px;
-    margin-bottom: 10px;
-}
-
-h4 {
-    margin-top: 3px;
-    margin-bottom: 3px;
-}
 
 input[type="radio"] {
     display: none;
@@ -48,12 +10,4 @@ input[type="radio"] {
 .dataset-box-enabled:hover {
     cursor: pointer;
     cursor: hand;
-}
-
-.checked {
-    background: #F3F3F3;
-}
-
-.waveform-container {
-    max-width: 500px;
 }
