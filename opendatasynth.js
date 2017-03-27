@@ -18,8 +18,8 @@ angular.module('ods-widgets').controller('OpenDataSynthController', ['$scope', '
         container: '#waveform',
         fillParent: true,
         scrollParent: false,
-        waveColor: 'darkblue',
-        progressColor: 'purple'
+        waveColor: '#337AC4',
+        progressColor: '#2b669a'
     });
 
     $scope.fieldSortable = function(item) {
