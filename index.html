@@ -26,7 +26,7 @@
         Is there really noise in all data? Find it out by listening — yes, listening — to your favorite datasets
         from
         the OpenDataSoft network.<br>
-        <a href="#how">How does it work?</a>
+        <a href="#what">What is this?</a>
     </p>
 </div>
 
@@ -44,7 +44,7 @@
         <div class="wrapper">
             <ods-spinner ng-show="working" with-backdrop class="main-spinner"></ods-spinner>
 
-            <div ods-results="items" ods-results-context="catctx" ods-results-max="8">
+            <div ods-results="items" ods-results-context="catctx" ods-results-max="6">
                 <div class="row">
                     <div class="col-sm-5">
                         <ul class="list-group">
@@ -151,13 +151,21 @@
     </ods-catalog-context>
 </div>
 
-<div class="container">
-    <h2 id="how">How does it work?</h2>
+<div id="what" class="container">
+    <h2>What am I looking at?</h2>
+    <p>
+        This page allows you to listen to listen to data, or more specifically to numeric data, stored on the OpenDataSoft platform. You can search for interesting datasets, select a numeric fields that you would like to listen to, and sort the data points according to a different column.
+    </p>
+    <h2>How is sound created out of data?</h2>
+    <p>
+        We operate by creating a <a href="//en.wikipedia.org/wiki/Pulse-code_modulation">pulse-code modulated</a> audio buffer using the individual data point of the dataset as samples of the sound wave amplitude. The Web Audio API then decodes that buffer and transforms it in sound. It is in a way a form of <a href="//en.wikipedia.org/wiki/Digital_synthesizer#Digital_synthesis">digital audio synthesis</a> using datasets as the source stream of numbers.
+    </p>
+
 </div>
 
 <div class="container">
     <hr>
-    <footer>Blablabla</footer>
+    <footer>Created by your friends at <a href="https://www.opendatasoft.com/">OpenDataSoft</a></footer>
 </div>
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/1.3.2/wavesurfer.min.js"></script>
