@@ -84,7 +84,7 @@
                                 </div>
                                 <div ng-repeat="item in items"
                                      class="controls"
-                                     ng-if="dts.id == item.datasetid">
+                                     ng-if="dts.id === item.datasetid">
                                     <ods-dataset-context context="dtsctx"
                                                          dtsctx-dataset="{{dts.id}}"
                                                          dtsctx-domain="data">
