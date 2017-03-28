@@ -31,10 +31,9 @@
 </div>
 
 <div class="ng-cloak container" ng-app="ods-widgets">
-
     <ods-catalog-context context="catctx"
                          catctx-domain="data"
-                         catctx-parameters="{'sort':'explore.download_count','refine.features':'analyze'}"
+                         catctx-parameters="{'sort':'explore.download_count','refine.features':'analyze' }"
                          ng-controller="OpenDataSynthController">
         <div class="row">
             <div class="col-xs-12">
@@ -52,16 +51,16 @@
                                  ng-class="{active: dts.id === item.datasetid}">
                                 <label class="dataset"
                                        ng-class="{'dataset-disabled': (item.fields|filter:fieldNumeric).length === 0}">
-                                <span class="badge pull-right">
-                                    <i class="quality-indicator fa fa-fw"
-                                       aria-hidden="true"
-                                       ng-class="{
-                                        'fa-deaf': (item.fields|filter:fieldNumeric).length === 0,
-                                        'fa-volume-off': (item.fields|filter:fieldNumeric).length > 0 &&item.metas.records_count < 500,
-                                        'fa-volume-down': (item.fields|filter:fieldNumeric).length > 0 && item.metas.records_count <= 2500 && item.metas.records_count > 500,
-                                        'fa-volume-up': (item.fields|filter:fieldNumeric).length > 0 && item.metas.records_count >= 2500
-                                        }"></i>
-                                </span>
+                                    <span class="badge pull-right">
+                                        <i class="quality-indicator fa fa-fw"
+                                           aria-hidden="true"
+                                           ng-class="{
+                                            'fa-deaf': (item.fields|filter:fieldNumeric).length === 0,
+                                            'fa-volume-off': (item.fields|filter:fieldNumeric).length > 0 &&item.metas.records_count < 500,
+                                            'fa-volume-down': (item.fields|filter:fieldNumeric).length > 0 && item.metas.records_count <= 2500 && item.metas.records_count > 500,
+                                            'fa-volume-up': (item.fields|filter:fieldNumeric).length > 0 && item.metas.records_count >= 2500
+                                            }"></i>
+                                    </span>
                                     <input type="radio"
                                            ng-model="dts.id"
                                            ng-change="dts.title = item.metas.title"
@@ -92,14 +91,14 @@
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label for="listeningField">Listening column</label>
+                                                    {{ (dtsctx.dataset.fields|filter:fieldNumeric)[0].name }}
                                                     <select name="listeningField"
                                                             class="form-control"
                                                             id="listeningField"
-                                                            ng-model="local.fld"
-                                                            ng-init="local.fld = null">
+                                                            ng-model="local.fld">
                                                         <option ng-repeat="field in (dtsctx.dataset.fields|filter:fieldNumeric)"
                                                                 value="{{field.name}}"
-                                                                ng-init="local.fld = ($first ? field.name : local.fld)">
+                                                                ng-init="initField(dtsctx.dataset.fields)">
                                                             {{field.label}}
                                                         </option>
                                                     </select>
@@ -111,10 +110,11 @@
                                                 <select name="sortingField"
                                                         class="form-control"
                                                         id="sortingField"
-                                                        ng-model="local.srt"
-                                                        ng-init="local.srt = null">
-                                                    <option ng-repeat="field in dtsctx.dataset.fields | filter:fieldSortable"
-                                                            value="{{field.name}}">{{field.label}}
+                                                        ng-model="local.srt">
+                                                    <option ng-repeat="field in (dtsctx.dataset.fields|filter:fieldSortable)"
+                                                            value="{{field.name}}"
+                                                            ng-init="initSort(dtsctx.dataset.fields)">
+                                                        {{field.label}}
                                                     </option>
                                                 </select>
 
@@ -122,6 +122,47 @@
                                         </div>
                                     </ods-dataset-context>
                                 </div>
+                                <div class="controls"
+                                     ng-if="notIncluded(dts.id, items)">
+                                    <ods-dataset-context context="dtsctx"
+                                                         dtsctx-dataset="{{dts.id}}"
+                                                         dtsctx-domain="data">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label for="listeningField">Listening column</label>
+                                                    {{ (dtsctx.dataset.fields|filter:fieldNumeric)[0].name }}
+                                                    <select name="listeningField"
+                                                            class="form-control"
+                                                            id="listeningField"
+                                                            ng-model="local.fld">
+                                                        <option ng-repeat="field in (dtsctx.dataset.fields|filter:fieldNumeric)"
+                                                                value="{{field.name}}"
+                                                                ng-init="initField(dtsctx.dataset.fields)">
+                                                            {{field.label}}
+                                                        </option>
+                                                    </select>
+                                                </div>
+
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label for="sortingField">Sort column</label>
+                                                <select name="sortingField"
+                                                        class="form-control"
+                                                        id="sortingField"
+                                                        ng-model="local.srt">
+                                                    <option ng-repeat="field in (dtsctx.dataset.fields|filter:fieldSortable)"
+                                                            value="{{field.name}}"
+                                                            ng-init="initSort(dtsctx.dataset.fields)">
+                                                        {{field.label}}
+                                                    </option>
+                                                </select>
+
+                                            </div>
+                                        </div>
+                                    </ods-dataset-context>
+                                </div>
+
                                 <div class="row">
                                     <div class="col-xs-12">
                                         <div id="waveform" ng-class="{'waveform-hidden': !dts.id}"></div>

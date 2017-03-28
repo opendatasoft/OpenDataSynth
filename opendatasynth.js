@@ -38,17 +38,35 @@ angular.module('ods-widgets').service('waveSurferService', function () {
     };
 });
 
-
-angular.module('ods-widgets').controller('OpenDataSynthController', ['$scope', '$http', 'waveSurferService', function($scope, $http, waveSurferService) {
+angular.module('ods-widgets').controller('OpenDataSynthController', [
+                                        '$scope',
+                                        '$http',
+                                        'waveSurferService',
+                                        'URLSynchronizer',
+                                        function($scope, $http, waveSurferService, URLSynchronizer) {
     $scope.working = false;
-    $scope.dts = {
-        id: null
-    };
-    $scope.local = {
-        fld: null,
-        srt: null
-    };
+    $scope.dts = {};
+    $scope.local = {};
+
+    URLSynchronizer.addSynchronizedValue($scope, 'dts.id', 'dataset');
+    URLSynchronizer.addSynchronizedValue($scope, 'local.fld', 'fld');
+    URLSynchronizer.addSynchronizedValue($scope, 'local.srt', 'srt');
+
+    $scope.local.fld = $scope.local.fld || null;
+    $scope.local.srt = $scope.local.srt || null;
     $scope.play = waveSurferService.play;
+
+    $scope.notIncluded = function(datasetid, datasets) {
+        if (! (datasetid && datasets)) {
+            return false;
+        }
+        for (var i = 0; i < datasets.length; i += 1) {
+            if (datasets[i].datasetid === datasetid) {
+                return false;
+            }
+        }
+        return true;
+    };
 
     $scope.fieldSortable = function(item) {
         if (item.type === "int" || item.type === "double" || item.type === "date" || item.type === "datetime") {
@@ -67,6 +85,29 @@ angular.module('ods-widgets').controller('OpenDataSynthController', ['$scope', '
 
     $scope.fieldNumeric = function(item) {
         return item.type === "int" || item.type === "double";
+    };
+
+    $scope.initField = function(fields) {
+        var numericFields = fields.filter($scope.fieldNumeric);
+        if ($scope.local.fld) {
+            for (var i = 0; i < numericFields.length; i += 1) {
+                if ($scope.local.fld === numericFields[i].name) {
+                    return;
+                }
+            }
+        }
+        $scope.local.fld = numericFields[0].name;
+    };
+    $scope.initSort = function(fields) {
+        var sortableFields = fields.filter($scope.fieldNumeric);
+        if ($scope.local.srt) {
+            for (var i = 0; i < sortableFields.length; i += 1) {
+                if ($scope.local.srt === sortableFields[i].name) {
+                    return;
+                }
+            }
+        }
+        $scope.local.srt = null;
     };
 
     $scope.$watch('catctx.parameters.q', function() {
