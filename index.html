@@ -102,9 +102,6 @@
                                                                 ng-init="local.fld = ($first ? field.name : local.fld)">
                                                             {{field.label}}
                                                         </option>
-                                                        <option ng-if="(dtsctx.dataset.fields|filter:fieldNumeric).length === 0"
-                                                                selected>There is nothing to listen to :(
-                                                        </option>
                                                     </select>
                                                 </div>
 
