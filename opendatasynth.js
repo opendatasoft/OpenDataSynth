@@ -1,10 +1,45 @@
-angular.module('ods-widgets').controller('OpenDataSynthController', ['$scope', '$http', function($scope, $http) {
-    var source;
+angular.module('ods-widgets').service('waveSurferService', function () {
     var duration = 2; //2 second of audio
     var sampleRate = 44100; //Works in most browsers
     var numOfSamples = duration * sampleRate;
     var context = new AudioContext();
 
+    var wavesurfer = WaveSurfer.create({
+        container: '#waveform',
+        fillParent: true,
+        scrollParent: false,
+        waveColor: '#337AC4',
+        progressColor: '#2b669a'
+    });
+
+    var audioBuffer = context.createBuffer(1, numOfSamples, sampleRate);
+    var dataBuffer = audioBuffer.getChannelData(0);
+    for (var i = 0; i < numOfSamples ; i += 1) {
+        dataBuffer[i] = 0;
+    }
+    wavesurfer.loadDecodedBuffer(audioBuffer);
+
+    return {
+        loadAsAudio: function(recVals) {
+            var smooth = Smooth(recVals);
+            var audioBuffer = context.createBuffer(1, numOfSamples, sampleRate);
+            var dataBuffer = audioBuffer.getChannelData(0);
+            // Loop on future sample indices, compute sample value and stick it in audio buffer
+            for (var i = 0; i < numOfSamples ; i += 1) {
+                var nval = smooth(i * recVals.length / numOfSamples);
+                dataBuffer[i] = nval;
+            }
+            wavesurfer.empty();
+            return wavesurfer.loadDecodedBuffer(audioBuffer);
+        },
+        play: function() {
+            return wavesurfer.play();
+        }
+    };
+});
+
+
+angular.module('ods-widgets').controller('OpenDataSynthController', ['$scope', '$http', 'waveSurferService', function($scope, $http, waveSurferService) {
     $scope.working = false;
     $scope.domUrl = null;
     $scope.dts = {
@@ -14,13 +49,6 @@ angular.module('ods-widgets').controller('OpenDataSynthController', ['$scope', '
         fld: null,
         srt: null
     };
-    $scope.wavesurfer = WaveSurfer.create({
-        container: '#waveform',
-        fillParent: true,
-        scrollParent: false,
-        waveColor: '#337AC4',
-        progressColor: '#2b669a'
-    });
 
     $scope.fieldSortable = function(item) {
         if (item.type === "int" || item.type === "double" || item.type === "date" || item.type === "datetime") {
@@ -73,8 +101,7 @@ angular.module('ods-widgets').controller('OpenDataSynthController', ['$scope', '
                 }
             }
             if (maxVal !== minVal) {
-                // Normalize the list of values in the interval [-1,1] in order to create
-                // a PCM audio waveform
+                // Normalize the list of values in the interval [-1,1] in order to create a PCM audio waveform
                 recVals = recVals.map(function(val) {
                     return 2 * ((val - minVal) / (maxVal - minVal)) - 1;
                 });
@@ -86,35 +113,14 @@ angular.module('ods-widgets').controller('OpenDataSynthController', ['$scope', '
             recVals.unshift(0);
             recVals.push(0);
             // Create a smooth function in order to interpollate extra points in interval
-            var smooth = Smooth(recVals);
-            // Loop on future sample indices, compute sample value and stick it in audio buffer
-            var audioBuffer = context.createBuffer(1, numOfSamples, sampleRate);
-            var dataBuffer = audioBuffer.getChannelData(0);
-
-            for (var j = 0; j < numOfSamples ; j += 1) {
-                var nval = smooth(j * recVals.length / numOfSamples);
-                dataBuffer[j] = nval;
-            }
-            $scope.wavesurfer.empty();
-            $scope.wavesurfer.loadDecodedBuffer(audioBuffer);
+            waveSurferService.loadAsAudio(recVals);
             $scope.working = false;
         });
     }, true);
-
-    (function initWaveSurfer() {
-        $scope.working = true;
-        var audioBuffer = context.createBuffer(1, numOfSamples, sampleRate);
-        var dataBuffer = audioBuffer.getChannelData(0);
-        for (var i = 0; i < numOfSamples ; i += 1) {
-            dataBuffer[i] = 0;
-        }
-        $scope.working = false;
-        $scope.wavesurfer.loadDecodedBuffer(audioBuffer);
-    })();
 }]);
 
-
-angular.module('ods-widgets').controller('CatalogContextController', ['$scope', function($scope) {
+angular.module('ods-widgets').controller('CatalogContextController', ['$scope', 'waveSurferService', function($scope, waveSurferService) {
+    $scope.play = waveSurferService.play;
     $scope.$watch('catctx.parameters.q', function() {
         $scope.catctx.parameters.start = 0;
     });
