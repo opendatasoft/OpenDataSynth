@@ -30,12 +30,12 @@
     </p>
 </div>
 
-<div class="ng-cloak container" ng-app="ods-widgets" ng-controller="OpenDataSynthController">
+<div class="ng-cloak container" ng-app="ods-widgets">
 
     <ods-catalog-context context="catctx"
                          catctx-domain="data"
                          catctx-parameters="{'sort':'explore.download_count','refine.features':'analyze'}"
-                         ng-controller="CatalogContextController">
+                         ng-controller="OpenDataSynthController">
         <div class="row">
             <div class="col-xs-12">
                 <ods-text-search placeholder="Search for musical datasets" context="catctx" autofocus="true"></ods-text-search>

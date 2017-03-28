@@ -41,7 +41,6 @@ angular.module('ods-widgets').service('waveSurferService', function () {
 
 angular.module('ods-widgets').controller('OpenDataSynthController', ['$scope', '$http', 'waveSurferService', function($scope, $http, waveSurferService) {
     $scope.working = false;
-    $scope.domUrl = null;
     $scope.dts = {
         id: null
     };
@@ -49,6 +48,7 @@ angular.module('ods-widgets').controller('OpenDataSynthController', ['$scope', '
         fld: null,
         srt: null
     };
+    $scope.play = waveSurferService.play;
 
     $scope.fieldSortable = function(item) {
         if (item.type === "int" || item.type === "double" || item.type === "date" || item.type === "datetime") {
@@ -69,13 +69,17 @@ angular.module('ods-widgets').controller('OpenDataSynthController', ['$scope', '
         return item.type === "int" || item.type === "double";
     };
 
+    $scope.$watch('catctx.parameters.q', function() {
+        $scope.catctx.parameters.start = 0;
+    });
+
     $scope.$watch('local', function(nv, ov) {
         if (! ($scope.dts.id && $scope.local.fld) ) {
             // The user is still working on the selection
             return;
         }
         $scope.working = true;
-        var url = $scope.$$childHead.catctx.domainUrl + "/api/records/1.0/search/?rows=10000&dataset=" + $scope.dts.id;
+        var url = $scope.catctx.domainUrl + "/api/records/1.0/search/?rows=10000&dataset=" + $scope.dts.id;
         if ($scope.local.srt) {
             url += "&sort=-" + $scope.local.srt;
         }
@@ -117,11 +121,4 @@ angular.module('ods-widgets').controller('OpenDataSynthController', ['$scope', '
             $scope.working = false;
         });
     }, true);
-}]);
-
-angular.module('ods-widgets').controller('CatalogContextController', ['$scope', 'waveSurferService', function($scope, waveSurferService) {
-    $scope.play = waveSurferService.play;
-    $scope.$watch('catctx.parameters.q', function() {
-        $scope.catctx.parameters.start = 0;
-    });
 }]);
