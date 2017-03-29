@@ -120,7 +120,7 @@ angular.module('ods-widgets').controller('OpenDataSynthController', [
             return;
         }
         $scope.working = true;
-        var url = $scope.catctx.domainUrl + "/api/records/1.0/search/?rows=10000&dataset=" + $scope.dts.id;
+        var url = $scope.catctx.domainUrl + "/api/records/1.0/search/?rows=10000&dataset=" + $scope.dts.id + "&fields=" + $scope.local.fld;
         if ($scope.local.srt) {
             url += "&sort=-" + $scope.local.srt;
         }
