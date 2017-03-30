@@ -56,8 +56,8 @@
                                            aria-hidden="true"
                                            ng-class="{
                                             'fa-deaf': (item.fields|filter:fieldNumeric).length === 0,
-                                            'fa-volume-off': (item.fields|filter:fieldNumeric).length > 0 &&item.metas.records_count < 500,
-                                            'fa-volume-down': (item.fields|filter:fieldNumeric).length > 0 && item.metas.records_count <= 2500 && item.metas.records_count > 500,
+                                            'fa-volume-off': (item.fields|filter:fieldNumeric).length > 0 && item.metas.records_count < 500,
+                                            'fa-volume-down': (item.fields|filter:fieldNumeric).length > 0 && item.metas.records_count < 2500 && item.metas.records_count >= 500,
                                             'fa-volume-up': (item.fields|filter:fieldNumeric).length > 0 && item.metas.records_count >= 2500
                                             }"></i>
                                     </span>
