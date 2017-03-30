@@ -160,6 +160,8 @@ angular.module('ods-widgets').controller('OpenDataSynthController', [
             // Create a smooth function in order to interpollate extra points in interval
             waveSurferService.loadAsAudio(recVals);
             $scope.working = false;
+        }, function(error) {
+            $scope.working = false;
         });
     }, true);
 }]);
