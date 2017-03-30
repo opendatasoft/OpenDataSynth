@@ -65,7 +65,7 @@
                                            ng-model="dts.id"
                                            ng-change="dts.title = item.metas.title"
                                            value="{{item.datasetid}}"
-                                           ng-disabled="working || (item.fields|filter:fieldNumeric).length === 0">
+                                           ng-disabled="working || (item.fields|filter:fieldNumeric).length === 0">
                                     <div class="dataset-title">{{item.metas.title}}</div>
                                     <div class="dataset-source">{{item.metas.source_domain_title}}</div>
                                 </label>
@@ -75,7 +75,7 @@
                     </div>
                     <div class="col-sm-7">
                         <div class="panel panel-primary">
-                            <div class="panel-heading" ng-show="dts.id">Listening to {{ dts.title || dts.id }}</div>
+                            <div class="panel-heading" ng-show="dts.id">Listening to {{ dts.title || dts.id }}</div>
                             <div class="panel-heading" ng-hide="dts.id">Please select a dataset</div>
                             <div class="panel-body">
                                 <div ng-hide="dts.id" class="alert alert-info">
